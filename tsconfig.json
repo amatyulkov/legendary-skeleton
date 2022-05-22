@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "declaration": true,
+    "declarationDir": "./build",
+    "rootDir": "./src"
+  },
+  "include": [
+    "./src/**/*.ts"
+  ]
+}

@@ -4,6 +4,8 @@
   "description": "Skeleton animation rendering library",
   "main": "index.ts",
   "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,7 +23,9 @@
   },
   "homepage": "https://github.com/amatyulkov/legendary-skeleton#readme",
   "devDependencies": {
+    "@rollup/plugin-typescript": "^8.3.2",
     "http-server": "^14.1.0",
+    "rollup": "^2.74.1",
     "typescript": "^4.6.4"
   }
 }
