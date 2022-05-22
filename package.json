@@ -1,0 +1,23 @@
+{
+  "name": "legendary-skeleton",
+  "version": "0.0.1",
+  "description": "Skeleton animation rendering library",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amatyulkov/legendary-skeleton.git"
+  },
+  "keywords": [
+    "skeleton",
+    "loading-animation"
+  ],
+  "author": "Anton Matyulkov <anton@matyulkov.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amatyulkov/legendary-skeleton/issues"
+  },
+  "homepage": "https://github.com/amatyulkov/legendary-skeleton#readme"
+}
