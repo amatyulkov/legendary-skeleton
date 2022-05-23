@@ -18,7 +18,7 @@ export class OutlineSkeleton implements SkeletonShape {
     const style = window.getComputedStyle(this.el);
     const { top, left, width, height } = this.el.getBoundingClientRect();
     const radius = parseFloat(style.borderRadius) || 0;
-    const outlineWidth = parseFloat(style.borderWidth) || 0;
+    const outlineWidth = parseFloat(style.borderWidth) || 1;
 
     alignRect(this.el, this.outer);
 

@@ -6,31 +6,18 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Basic Example: Legendary Skeleton</title>
+  <base href="https://amatyulkov.github.io/legendary-skeleton/" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
   <style>
     html,
     body {
       height: 100%;
     }
 
-    html {
-      background-color: var(--demo--background);
-    }
-
     :root {
-      --demo--background: #252423;
-      --skeleton--base: #dabc67;
-      --skeleton--highlight: #fff4bd;
-      --skeleton--animation-duration: 1000ms;
-      --skeleton--highlight-width: 50%;
-    }
-
-    .skeleton__svg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
+      --bs-body-bg: #252423;
     }
 
     .skeleton__inline {
@@ -153,7 +140,7 @@
 <body>
   <div class="demo__wrapper">
     <div class="demo__loading">
-      <div class="demo__card" data-skeleton="fill"></div>
+      <!-- <div class="demo__card" data-skeleton="fill"></div>
       <div class="demo__card demo__card--outline" data-skeleton="outline">
         <div class="skeleton__line demo__placeholder" style="width: 80%" data-skeleton="fill"></div>
         <div class="skeleton__line demo__placeholder" style="width: 60%" data-skeleton="fill"></div>
@@ -185,28 +172,64 @@
       <div class="demo__card" data-skeleton="fill"></div>
       <div class="demo__card demo__card--outline" data-skeleton="outline">
         <div class="skeleton__line demo__placeholder" style="width: 40%" data-skeleton="fill"></div>
-      </div>
+      </div> -->
+
+      <form class="card" style="grid-row: 1/3; grid-column: 3/4; text-align: center;">
+        <div class="card-body">
+          <h1 class="card-title">
+            <span data-skeleton="fill">Log In</span>
+          </h1>
+          <div class="card-text">
+            <label for="exampleFormControlInput1" class="form-label">
+              <span data-skeleton="fill">Email address</span>
+            </label>
+            <div class="input-group mb-3" data-skeleton="outline" style="border-radius: 6px">
+              <span class="input-group-text" id="basic-addon1">
+                <span data-skeleton="fill">@</span>
+              </span>
+              <input type="text" class="form-control" placeholder="Email Address" aria-label="Email Address"
+                aria-describedby="basic-addon1">
+            </div>
+            <label for="exampleFormControlInput1" class="form-label">
+              <span data-skeleton="fill">Password</span>
+            </label>
+            <div class="input-group mb-3" data-skeleton="outline" style="border-radius: 6px">
+              <span class="input-group-text" id="basic-addon1">
+                <span data-skeleton="fill">*</span>
+              </span>
+              <input type="password" class="form-control" placeholder="Password" aria-label="Password"
+                aria-describedby="basic-addon1">
+            </div>
+          </div>
+          <p>
+            <button href="#" class="btn btn-primary" data-skeleton="fill">Log In</button>
+          </p>
+        </div>
+      </form>
     </div>
 
-    <script>
+    <script type="module">
+
+      import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.16/+esm';
+      import { Skeleton, SkeletonPart } from '/build/index.js';
 
       async function init() {
-        const { Skeleton, SkeletonPart } = await import('/build/index.js')
-        const mgr = new Skeleton();
+        const skeleton = new Skeleton();
 
-        Array.from(document.querySelectorAll("[data-skeleton]")).forEach((node) => {
-          const item = new SkeletonPart(node);
-          mgr.register(item);
-        });
-
-        window.addEventListener("resize", () => {
-          mgr.sync();
-        });
+        const gui = new GUI();
+        gui.add(document, 'title');
+        gui.add(skeleton, 'activate');
+        gui.add(skeleton, 'deactivate');
       }
 
       init();
 
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+      crossorigin="anonymous"></script>
+
 
 </body>
 
