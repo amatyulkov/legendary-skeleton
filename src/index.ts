@@ -3,8 +3,8 @@
 // TODO: custom identity
 // TODO: custom attributes on skeleton parts
 
-import { Skeleton } from "./skeleton";
-import { SkeletonPart } from "./skeleton-part";
+import { Skeleton } from "./components/skeleton";
+import { SkeletonPart } from "./components/skeleton-part";
 
 // definitions
 // skeleton -- an arrangement of skeleton shapes

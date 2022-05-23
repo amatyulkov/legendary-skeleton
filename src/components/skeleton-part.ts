@@ -1,6 +1,6 @@
+import { SkeletonShape } from "../types/skeleton-shape";
 import { FillSkeleton } from "./fill-skeleton";
 import { OutlineSkeleton } from "./outline-skeleton";
-import { SkeletonShape } from "./types/skeleton-shape";
 
 export class SkeletonPart {
   public elements: SkeletonShape;

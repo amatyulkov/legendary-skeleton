@@ -1,6 +1,6 @@
-import { Identity, setAttributes, SVG_NS } from "./lib";
+import { Identity, setAttributes, SVG_NS } from "../lib";
 import { SkeletonPart } from "./skeleton-part";
-import { SkeletonConfig } from "./types/skeleton-config";
+import { SkeletonConfig } from "../types/skeleton-config";
 
 export class Skeleton {
   nodes: SkeletonPart[] = [];

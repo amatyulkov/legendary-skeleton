@@ -1,5 +1,5 @@
-import { alignRect, setAttributes, SVG_NS } from "./lib";
-import { SkeletonShape } from "./types/skeleton-shape";
+import { alignRect, setAttributes, SVG_NS } from "../lib";
+import { SkeletonShape } from "../types/skeleton-shape";
 
 export class OutlineSkeleton implements SkeletonShape {
   private outer: SVGRectElement = document.createElementNS(SVG_NS, "rect");
