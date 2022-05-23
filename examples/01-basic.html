@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic Example: Legendary Skeleton</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    html {
+      background-color: var(--demo--background);
+    }
+
+    :root {
+      --demo--background: #252423;
+      --skeleton--base: #dabc67;
+      --skeleton--highlight: #fff4bd;
+      --skeleton--animation-duration: 1000ms;
+      --skeleton--highlight-width: 50%;
+    }
+
+    .skeleton__svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .skeleton__inline {
+      display: inline-block;
+      height: 0.85em;
+      transform: translateY(0.15);
+      border-radius: 0.5em;
+    }
+
+    .skeleton__pill {
+      display: inline-block;
+      border-radius: 100px;
+    }
+
+    .skeleton__circle {
+      display: inline-block;
+      border-radius: 100%;
+    }
+
+    .skeleton__circle::after {
+      padding-bottom: 100%;
+      content: "";
+      display: block;
+    }
+
+    .skeleton__line {
+      display: block;
+    }
+
+    .skeleton__line--h {
+      height: 1px;
+      width: 100%;
+    }
+
+    .skeleton__line--v {
+      width: 1px;
+      height: 100%;
+    }
+
+    .demo__wrapper {
+      height: 100%;
+      display: grid;
+      justify-content: center;
+      align-items: center;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto -webkit-min-content;
+      grid-template-rows: auto min-content;
+    }
+
+    .demo__card {
+      border-radius: 8px;
+    }
+
+    .demo__card--outline {
+      border: 1px solid transparent;
+    }
+
+    .demo__loading {
+      display: grid;
+      grid-template-columns: 1fr 1fr 320px 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      padding-left: 40px;
+      padding-right: 40px;
+      gap: 40px;
+    }
+
+    .demo__placeholder {
+      border-radius: 4px;
+      height: 16px;
+      margin: 12px;
+    }
+
+    .demo__form {
+      box-sizing: border-box;
+      padding: 40px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      grid-column: 3/4;
+      grid-row: 1/-1;
+    }
+
+    .demo__form-title {
+      font-size: 2em;
+      border-radius: 4px;
+      height: 1em;
+      width: 100%;
+      margin-top: 0;
+    }
+
+    .demo__form-label {
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+
+    .demo__form-control {
+      border: 1px solid transparent;
+      height: 40px;
+      border-radius: 4px;
+    }
+
+    .demo__form-label+.demo__form-control {
+      margin-top: 10px;
+    }
+
+    .demo__form-group+.demo__form-group {
+      margin-top: 20px;
+    }
+
+    .demo__form-title+.demo__form-group {
+      margin-top: 40px;
+    }
+
+    .demo__form-controls {
+      margin-top: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="demo__wrapper">
+    <div class="demo__loading">
+      <div class="demo__card" data-skeleton="fill"></div>
+      <div class="demo__card demo__card--outline" data-skeleton="outline">
+        <div class="skeleton__line demo__placeholder" style="width: 80%" data-skeleton="fill"></div>
+        <div class="skeleton__line demo__placeholder" style="width: 60%" data-skeleton="fill"></div>
+      </div>
+      <div class="demo__card" data-skeleton="fill"></div>
+      <div class="demo__card" data-skeleton="fill"></div>
+      <div class="demo__form" data-skeleton="outline">
+        <div role="presentation" class="demo__form-title skeleton__inline" data-skeleton="fill"></div>
+        <div class="demo__form-group">
+          <div class="demo__form-label skeleton__inline" data-skeleton="fill" style="width: 120px"></div>
+          <div class="demo__form-control" data-skeleton="outline">
+            <div class="demo__placeholder" style="width: 80px" data-skeleton="fill"></div>
+          </div>
+        </div>
+        <div class="demo__form-group">
+          <div class="demo__form-label skeleton__inline" data-skeleton="fill" style="width: 160px"></div>
+          <div class="demo__form-control" data-skeleton="outline">
+            <div class="demo__placeholder" style="width: 200px" data-skeleton="fill"></div>
+          </div>
+        </div>
+        <div class="demo__form-controls">
+          <div class="demo__button" data-skeleton="fill"></div>
+        </div>
+
+      </div>
+
+      <div class="demo__card" data-skeleton="fill"></div>
+      <div class="demo__card" data-skeleton="fill"></div>
+      <div class="demo__card" data-skeleton="fill"></div>
+      <div class="demo__card demo__card--outline" data-skeleton="outline">
+        <div class="skeleton__line demo__placeholder" style="width: 40%" data-skeleton="fill"></div>
+      </div>
+    </div>
+
+    <script>
+
+      async function init() {
+        const { SkeletonManager, SkeletonItem } = await import('/build/index.js')
+
+        console.log({SkeletonItem, SkeletonManager})
+        const mgr = new SkeletonManager();
+
+        Array.from(document.querySelectorAll("[data-skeleton]")).forEach((node) => {
+          const item = new SkeletonItem(node);
+          mgr.register(item);
+        });
+
+        window.addEventListener("resize", () => {
+          mgr.sync();
+        });
+      }
+
+      init();
+
+    </script>
+
+</body>
+
+</html>
