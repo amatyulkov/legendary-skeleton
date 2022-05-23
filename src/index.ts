@@ -1,15 +1,14 @@
-// TODO: maybe outlines can be just done with stroke?
 // TODO: fix script path on github pages
 // TODO: custom identity
 // TODO: custom attributes on skeleton parts
+// TODO: control skeleton colors
+// TODO: control skeleton angle
+// TODO: control skeleton duration
+// TODO: custom part configs: opacity, texture? etc
+// TODO: use existing SVG as mask
+// TODO: animate in-out
 
 import { Skeleton } from "./components/skeleton";
 import { SkeletonPart } from "./components/skeleton-part";
-
-// definitions
-// skeleton -- an arrangement of skeleton shapes
-// skeleton shape -- a rendered object
-// skeleton root -- where skeleton parts are attached to
-// skeleton part -- a single shape that a skeleton UI us comprised of
 
 export { Skeleton, SkeletonPart };

@@ -1,124 +1,112 @@
 import { Identity, setAttributes, SVG_NS } from "../lib";
 import { SkeletonPart } from "./skeleton-part";
 import { SkeletonConfig } from "../types/skeleton-config";
+import { SkeletonGradient } from "./skeleton-gradient";
 
+// TODO: all private methods are probably public component APIs
 export class Skeleton {
-  nodes: SkeletonPart[] = [];
-  gradient: SVGLinearGradientElement;
-  root: SVGElement;
-  constructor(el = document.body) {
-    this.nodes = [];
+  parts: SkeletonPart[] = [];
 
-    const svg = document.createElementNS(SVG_NS, "svg");
-    const mask = document.createElementNS(SVG_NS, "mask");
-    const fill = document.createElementNS(SVG_NS, "rect");
-    const defs = document.createElementNS(SVG_NS, "defs");
-    const maskId = "maskId";
-    const { scrollWidth, scrollHeight } = document.body;
+  root = document.createElementNS(SVG_NS, "svg");
+  fill = document.createElementNS(SVG_NS, "rect");
+  defs = document.createElementNS(SVG_NS, "defs");
+  mask = document.createElementNS(SVG_NS, "mask");
 
-    mask.id = maskId;
+  gradient: SkeletonGradient;
+  config: SkeletonConfig;
 
-    const style = window.getComputedStyle(el);
+  constructor(
+    private el = document.body,config: Partial<SkeletonConfig> = {}
+  ) {
+    this.config = this.parseConfig(config);
+    this.gradient = new SkeletonGradient(this.config);
+    this.initMask();
+    this.initFill();
+    this.initRoot();
+    this.initParts();
+  }
 
-    this.config.highlightWidth = style
-      .getPropertyValue("--skeleton--highlight-width")
-      .trim();
-    this.config.animationDuration = style
-      .getPropertyValue("--skeleton--animation-duration")
-      .trim();
-    this.gradient = this.createGradient();
+  private initRoot () {
+    const { scrollWidth, scrollHeight } = this.el;
 
-    setAttributes(fill, {
+    this.root.style.position = 'absolute';
+    this.root.style.top = '0';
+    this.root.style.left = '0';
+    this.root.style.width = '100%';
+    this.root.style.height = '100%';
+    this.root.style.pointerEvents = 'none';
+
+    this.root.setAttribute("viewbox", `0 0 ${scrollWidth} ${scrollHeight}`);
+    this.root.appendChild(this.fill);
+    this.root.appendChild(this.defs);
+    this.defs.appendChild(this.mask);
+    this.defs.appendChild(this.gradient.element);
+    this.el.appendChild(this.root);
+  }
+
+  private initMask () {
+    this.mask.id = `${this.config.namespace}-mask-${Identity.next()}`
+  }
+
+  private initFill () {
+    setAttributes(this.fill, {
       width: "100%",
       height: "100%",
       x: 0,
       y: 0,
-      fill: `url(#${this.gradient.id})`,
-      mask: `url(#${maskId})`,
+      fill: `url(#${this.gradient.element.id})`,
+      mask: `url(#${this.mask.id})`,
     });
-
-    svg.classList.add("skeleton__svg");
-    svg.setAttribute("viewbox", `0 0 ${scrollWidth} ${scrollHeight}`);
-    svg.appendChild(fill);
-    svg.appendChild(mask);
-    el.appendChild(svg);
-    this.root = svg;
-    defs.appendChild(this.gradient);
-    this.root.appendChild(defs);
   }
 
-  config: Partial<SkeletonConfig> = {};
+  private initParts() {
+    Array.from(
+      document.querySelectorAll<HTMLElement>(this.config.partSelector)
+    ).forEach((el) => {
+      const part = new SkeletonPart(el);
+      this.parts.push(part);
+      part.elements
+        .getElements()
+        .forEach((shapeEl) => this.mask.appendChild(shapeEl));
 
-  // TODO: to a separate class
-  createGradient() {
-    const gradient = document.createElementNS(SVG_NS, "linearGradient");
-    const animateX1 = document.createElementNS(SVG_NS, "animate");
-    const animateX2 = document.createElementNS(SVG_NS, "animate");
-    const animateY1 = document.createElementNS(SVG_NS, "animate");
-    const animateY2 = document.createElementNS(SVG_NS, "animate");
-
-    const stopA = document.createElementNS(SVG_NS, "stop");
-    const stopB = document.createElementNS(SVG_NS, "stop");
-    const stopC = document.createElementNS(SVG_NS, "stop");
-
-    const animations = [animateX1, animateX2, animateY1, animateY2];
-    const stops = [stopA, stopB, stopC];
-    const percent = parseFloat(this.config.highlightWidth || "50%"); // TODO: config should not be partial
-
-    setAttributes(animateX1, { attributeName: "x1", values: "-200%; 100%" });
-    setAttributes(animateY1, { attributeName: "y1", values: "200%; -100%" });
-    setAttributes(animateX2, { attributeName: "x2", values: "-100%; 200%" });
-    setAttributes(animateY2, { attributeName: "y2", values: "100%; -200%" });
-
-    setAttributes(stopA, {
-      offset: "0%",
-      ["stop-color"]: "var(--skeleton--base)",
+      part.sync();
     });
-    setAttributes(stopB, {
-      offset: `${percent / 2}%`,
-      ["stop-color"]: "var(--skeleton--highlight)",
-    });
-    setAttributes(stopC, {
-      offset: `${percent}%`,
-      ["stop-color"]: "var(--skeleton--base)",
-    });
+  }
 
-    gradient.id = `skeleton-gradient-${Identity.next()}`;
-
-    // Safari needs initial values
-    setAttributes(gradient, {
-      x1: "-200%",
-      x2: "-100%",
-      y1: "200%",
-      y2: "100%",
-    });
-
-    animations.forEach((x) => {
-      setAttributes(x, {
-        dur: this.config.animationDuration || "1000ms", // TODO: config should not be partial
-        repeatCount: "indefinite",
-      });
-      gradient.appendChild(x);
-    });
-    stops.forEach((x) => gradient.appendChild(x));
-
-    return gradient as SVGLinearGradientElement;
+  private parseConfig(config: Partial<SkeletonConfig>): SkeletonConfig {
+    const namespace = config.namespace ?? "skeleton";
+    const color = config.color ?? "rgba(128, 128, 128, 0.1)";
+    const highlight = config.highlight ?? "rgba(128, 128, 128, 0.2)";
+    const highlightWidth = config.highlightWidth ?? 0.5;
+    return {
+      animationDuration: config.animationDuration ?? 1000,
+      highlightWidth,
+      namespace,
+      partSelector: config.partSelector ?? `[data-${namespace}]`,
+      color,
+      highlight,
+      stops: config.stops ?? [
+        { offset: 0, color },
+        { offset: highlightWidth / 2, color: highlight },
+        { offset: highlightWidth, color },
+      ],
+    };
   }
 
   register(item: SkeletonPart) {
-    this.nodes.push(item);
+    this.parts.push(item);
     item.elements.getElements().forEach((el) => {
-      this.root.querySelector("mask")?.appendChild(el); // TODO: store mask definitely as non-optional
+      this.mask.appendChild(el);
     });
     item.sync();
   }
 
   sync() {
-    this.nodes.forEach((x) => x.sync());
+    this.parts.forEach((x) => x.sync());
 
     this.root.setAttribute(
       "viewbox",
-      `0 0 ${document.body.scrollWidth} ${document.body.scrollHeight}`
+      `0 0 ${this.el.scrollWidth} ${this.el.scrollHeight}`
     );
   }
 }
