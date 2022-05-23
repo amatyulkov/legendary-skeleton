@@ -191,13 +191,11 @@
     <script>
 
       async function init() {
-        const { SkeletonManager, SkeletonItem } = await import('/build/index.js')
-
-        console.log({SkeletonItem, SkeletonManager})
-        const mgr = new SkeletonManager();
+        const { Skeleton, SkeletonPart } = await import('/build/index.js')
+        const mgr = new Skeleton();
 
         Array.from(document.querySelectorAll("[data-skeleton]")).forEach((node) => {
-          const item = new SkeletonItem(node);
+          const item = new SkeletonPart(node);
           mgr.register(item);
         });
 
