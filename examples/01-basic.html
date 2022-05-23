@@ -211,13 +211,13 @@
     <script type="module">
 
       import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.16/+esm';
-      import { Skeleton, SkeletonPart } from '/build/index.js';
+      import { Skeleton, SkeletonPart } from './build/index.js';
 
       async function init() {
         const skeleton = new Skeleton();
 
         const gui = new GUI();
-        gui.add(document, 'title');
+
         gui.add(skeleton, 'activate');
         gui.add(skeleton, 'deactivate');
       }
