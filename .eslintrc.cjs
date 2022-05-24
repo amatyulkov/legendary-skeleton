@@ -1,13 +1,13 @@
 module.exports = {
   root: true,
-  parser: '@typescript-eslint/parser',
+  parser: "@typescript-eslint/parser",
 
-  plugins: [
-    '@typescript-eslint',
+  plugins: ["@typescript-eslint"],
+  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  ignorePatterns: [
+    ".eslintrc.cjs",
+    "build/**/*",
+    "babel.config.js",
+    "jest.config.js",
   ],
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-  ],
-  ignorePatterns: [".eslintrc.cjs", "build/**/*"],
 };

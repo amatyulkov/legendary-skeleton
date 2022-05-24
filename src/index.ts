@@ -9,6 +9,7 @@
 // TODO: animate in-out
 // TODO: infer skeleton color based on current color
 // TODO: allow to layer skeletons
+
 import { Skeleton } from "./components/skeleton";
 import { SkeletonPart } from "./components/skeleton-part";
 
