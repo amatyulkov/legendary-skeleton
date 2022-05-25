@@ -4,19 +4,13 @@ import { SkeletonConfig } from "../types/skeleton-config";
 export class SkeletonGradient {
   element = document.createElementNS(SVG_NS, "linearGradient");
 
+  private stops: SVGStopElement[] = [];
+
   constructor({ animationDuration, stops, namespace }: SkeletonConfig) {
+    this.element.id = `${namespace}-gradient-${Identity.next()}`;
 
-    this.element.id = `${namespace}-gradient-${Identity.next()}`
-
-    stops.forEach(({ color, offset }) => {
-      const el = document.createElementNS(SVG_NS, "stop");
-      setAttributes(el, {
-        offset: `${offset * 100}%`,
-        ["stop-color"]: color,
-      });
-
-      this.element.appendChild(el);
-    });
+    this.stops = this.createStops(stops);
+    this.appendStops();
 
     setAttributes(this.element, {
       x1: "-200%",
@@ -44,5 +38,32 @@ export class SkeletonGradient {
       });
       this.element.appendChild(x);
     });
+  }
+
+  private appendStops() {
+    this.stops.forEach((el) => this.element.appendChild(el));
+  }
+
+  private createStops(stops: SkeletonConfig["stops"]) {
+    return stops.map(({ color, offset }) => {
+      const el = document.createElementNS(SVG_NS, "stop");
+      setAttributes(el, {
+        offset: `${offset * 100}%`,
+        ["stop-color"]: color,
+      });
+
+      return el;
+    });
+  }
+
+  updateStops(stops: SkeletonConfig["stops"]) {
+    this.removeStops();
+    this.stops = this.createStops(stops);
+    this.appendStops();
+  }
+
+  private removeStops() {
+    this.stops.forEach((el) => el.remove());
+    this.stops = [];
   }
 }

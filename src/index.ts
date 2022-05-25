@@ -1,4 +1,3 @@
-// TODO: fix script path on github pages
 // TODO: custom identity
 // TODO: custom attributes on skeleton parts
 // TODO: custom part configs: opacity, texture? etc

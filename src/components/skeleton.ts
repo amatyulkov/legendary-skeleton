@@ -25,6 +25,10 @@ export class Skeleton {
     this._isActive = value;
   }
 
+  public getElement() {
+    return this.root;
+  }
+
   constructor(
     private el = document.body,
     config: Partial<SkeletonConfig> = {}
@@ -42,9 +46,17 @@ export class Skeleton {
     this.initParts();
   }
 
+  public setConfig(config: Partial<SkeletonConfig>) {
+    const { stops } = config;
+    if (stops) {
+      this.gradient.updateStops(stops);
+      this.config.stops = stops;
+    }
+  }
+
   public deactivate() {
     this.isActive = true;
-    this.getPartNodes().forEach(x => x.style.visibility = '')
+    this.getPartNodes().forEach((x) => (x.style.visibility = ""));
     this.root.remove();
   }
 
@@ -101,20 +113,16 @@ export class Skeleton {
 
   private parseConfig(config: Partial<SkeletonConfig>): SkeletonConfig {
     const namespace = config.namespace ?? "skeleton";
-    const color = config.color ?? "rgba(128, 128, 128, 0.1)";
-    const highlight = config.highlight ?? "rgba(128, 128, 128, 0.2)";
-    const highlightWidth = config.highlightWidth ?? 0.5;
+    const color = "rgba(128, 128, 128, 0.1)";
+    const highlight = "rgba(128, 128, 128, 0.2)";
     return {
       animationDuration: config.animationDuration ?? 1000,
-      highlightWidth,
       namespace,
       partSelector: config.partSelector ?? `[data-${namespace}]`,
-      color,
-      highlight,
       stops: config.stops ?? [
         { offset: 0, color },
-        { offset: highlightWidth / 2, color: highlight },
-        { offset: highlightWidth, color },
+        { offset: 0.25, color: highlight },
+        { offset: 0.5, color },
       ],
     };
   }

@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Skeleton Should allow to overwrite stops: default stops 1`] = `
+Array [
+  <stop
+    offset="0%"
+    stop-color="rgba(128, 128, 128, 0.1)"
+  />,
+  <stop
+    offset="25%"
+    stop-color="rgba(128, 128, 128, 0.2)"
+  />,
+  <stop
+    offset="50%"
+    stop-color="rgba(128, 128, 128, 0.1)"
+  />,
+]
+`;
+
+exports[`Skeleton Should allow to overwrite stops: updated stops 1`] = `
+Array [
+  <stop
+    offset="0%"
+    stop-color="red"
+  />,
+  <stop
+    offset="10%"
+    stop-color="green"
+  />,
+  <stop
+    offset="20%"
+    stop-color="blue"
+  />,
+  <stop
+    offset="30%"
+    stop-color="white"
+  />,
+]
+`;
+
+exports[`Skeleton Should have default gradient stops: default stops 1`] = `
+Array [
+  <stop
+    offset="0%"
+    stop-color="rgba(128, 128, 128, 0.1)"
+  />,
+  <stop
+    offset="25%"
+    stop-color="rgba(128, 128, 128, 0.2)"
+  />,
+  <stop
+    offset="50%"
+    stop-color="rgba(128, 128, 128, 0.1)"
+  />,
+]
+`;
