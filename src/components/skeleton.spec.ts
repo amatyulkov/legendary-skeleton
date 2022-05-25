@@ -78,7 +78,9 @@ describe("Skeleton", () => {
     expect(partSvg).toMatchSnapshot();
 
     oldSize.mockRestore();
+
     setBodyScrollDimensions(400, 400);
+
     const newSize = setRects(part, {
       top: 100,
       left: 100,
@@ -91,5 +93,21 @@ describe("Skeleton", () => {
     expect(el.getAttribute("viewbox")).toBe("0 0 400 400");
     expect(partSvg).toMatchSnapshot();
     newSize.mockRestore();
+  });
+
+  it("should throttle resize calls", () => {
+    const skeleton = new Skeleton();
+
+    // override visibility
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const spy = jest.spyOn(skeleton as any, "onResize");
+
+    expect(spy.mock.calls).toHaveLength(0);
+
+    Array.from({ length: 5 }).forEach(() => {
+      global.dispatchEvent(new Event("resize"));
+    });
+
+    expect(spy.mock.calls).toHaveLength(1);
   });
 });

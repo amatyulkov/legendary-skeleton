@@ -1,3 +1,4 @@
+import debounce from "lodash-es/debounce";
 import { Identity, setAttributes, SVG_NS } from "../lib";
 import { SkeletonPart } from "./skeleton-part";
 import { SkeletonConfig } from "../types/skeleton-config";
@@ -40,7 +41,10 @@ export class Skeleton {
   }
 
   private assignEventListeners() {
-    window.addEventListener("resize", () => this.onResize());
+    window.addEventListener(
+      "resize",
+      debounce(() => this.onResize(), 1000 / 60, { leading: true })
+    );
   }
 
   private onResize() {
