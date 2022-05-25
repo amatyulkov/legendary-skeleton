@@ -54,3 +54,25 @@ Array [
   />,
 ]
 `;
+
+exports[`Skeleton should update parts coordinates on resize 1`] = `
+<rect
+  fill="white"
+  height="250"
+  rx=""
+  width="250"
+  x="125"
+  y="125"
+/>
+`;
+
+exports[`Skeleton should update parts coordinates on resize 2`] = `
+<rect
+  fill="white"
+  height="200"
+  rx=""
+  width="200"
+  x="100"
+  y="100"
+/>
+`;

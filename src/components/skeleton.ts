@@ -36,6 +36,16 @@ export class Skeleton {
     this.config = this.parseConfig(config);
     this.gradient = new SkeletonGradient(this.config);
     this.activate();
+    this.assignEventListeners();
+  }
+
+  private assignEventListeners() {
+    window.addEventListener("resize", () => this.onResize());
+  }
+
+  private onResize() {
+    this.updateViewBox();
+    this.parts.forEach((part) => part.sync());
   }
 
   public activate() {
@@ -61,7 +71,7 @@ export class Skeleton {
   }
 
   private initRoot() {
-    const { scrollWidth, scrollHeight } = this.el;
+    this.updateViewBox();
 
     this.root.style.position = "absolute";
     this.root.style.top = "0";
@@ -70,12 +80,16 @@ export class Skeleton {
     this.root.style.height = "100%";
     this.root.style.pointerEvents = "none";
 
-    this.root.setAttribute("viewbox", `0 0 ${scrollWidth} ${scrollHeight}`);
     this.root.appendChild(this.fill);
     this.root.appendChild(this.defs);
     this.defs.appendChild(this.mask);
     this.defs.appendChild(this.gradient.element);
     this.el.appendChild(this.root);
+  }
+
+  private updateViewBox() {
+    const { scrollWidth, scrollHeight } = this.el;
+    this.root.setAttribute("viewbox", `0 0 ${scrollWidth} ${scrollHeight}`);
   }
 
   private initMask() {
